@@ -10,17 +10,31 @@ const socket = io()
 
 //player num
 socket.on('player-number', num => {
-    if(num === -1){
-        infoDisplay.innerHTML = "Server full"
+    if (num === -1) {
+        infoDisplay.innerHTML = "<h1>Server full</h1>"
     } else {
         playerNum = parseInt(num)
-        if(playerNum === 1) currentPlayer = "player1"
+        if (playerNum === 1) currentPlayer = "player1"
         console.log(playerNum)
     }
 })
 
 //connected disconnected
 
-socket.on('player-connection', num =>{
+socket.on('player-connection', num => {
     console.log(`Player number ${num} has connected or disconnected`)
 })
+
+
+//GAME
+
+let tableRow = document.getElementsByTagName('tr')
+let tableCell = document.getElementsByTagName('td')
+let tableSlot = document.querySelector('.slot')
+
+for (let i = 0; i<tableCell.length; i++){
+    tableCell[i].addEventListener('click', (e) =>{
+       console.log(`${e.target.parentElement.rowIndex}, ${e.target.cellIndex}`)
+       
+    })
+}

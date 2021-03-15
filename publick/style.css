@@ -1,0 +1,19 @@
+.gameCanvas{
+    background-color: aqua;
+    position: absolute;
+    top: auto;
+    left: 50%;
+    transform: translate(-50%);
+    width: 80vh;
+    height: 80vh;
+    border:1px solid black;
+    padding: 5px;
+
+}
+
+.slot{
+    width: 9.8vh;
+    height: 9.8vh;
+    background-color: white;
+    border: 1px solid black
+}
