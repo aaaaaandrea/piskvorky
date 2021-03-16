@@ -38,3 +38,14 @@ for (let i = 0; i<tableCell.length; i++){
        
     })
 }
+
+Array.prototype.forEach.call(tableCell, (cell) => {
+    cell.addEventListener('click', (e)=>{
+        cell.style.backgroundColor = 'red'
+    })
+    cell.style.backgroundColor = 'white'
+})
+
+/*function changeColor (e){
+    style.backgroundColor = 'red'
+}*/

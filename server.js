@@ -21,7 +21,7 @@ const connections = [null, null]
 io.on('connection', socket => {
     //console.log('Nove pripojeni')
 
-    //najdi cislo hrace
+    //najdi dostupne cislo hrace
     let playerIndex = -1
     for (const i in connections) {
         if (connections[i] === null) {
@@ -29,7 +29,6 @@ io.on('connection', socket => {
             break
         }
     }
-
 
 
     //tell the number of player
