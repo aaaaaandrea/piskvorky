@@ -25,10 +25,24 @@ io.on('connection', socket => {
         io.emit('message', 'Player has left the game')
     })
 
+    //pocita kolikrat bzlo kliknuto na pole
+    socket.on('clicks', () => {
+        io.emit('clicksPlus')
+    })
+
+    //nasloucha jestli nekdo kliknul na pole a pote meni barvu
+    socket.on('blockColor', (blockColor) => {
+        io.emit('changeColor', blockColor)
+    })
+
     //nasloucha zpravu o pozici
     socket.on('position', (position) => {
         io.emit('message', position)
     })
+
+
+
+
 })
 
 const PORT = 3030 || process.env.PORT

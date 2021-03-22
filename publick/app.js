@@ -4,6 +4,8 @@ socket.on('message', message => {
     console.log(message)
 })
 
+
+
 //GAME
 
 
@@ -11,40 +13,33 @@ socket.on('message', message => {
 let tableRow = document.getElementsByTagName('tr')
 let tableCell = document.getElementsByTagName('td')
 let tableSlot = document.querySelector('.slot')
-let color = ['red','blue']
+let color = ['red', 'blue']
 let clicks = 0
+let blockColor, position
 
-/*for (let i = 0; i<tableCell.length; i++){
-    tableCell[i].addEventListener('click', (e) =>{
-       console.log(`${e.target.parentElement.rowIndex}, ${e.target.cellIndex}`)
-       
-    })
-}*/
 
 for (let i = 0; i < tableCell.length; i++) {
-    
+
     tableCell[i].addEventListener('click', (e) => {
-        clicks ++
         e.preventDefault()
-        tableCell[i].style.backgroundColor = color[clicks%2]
-        let position = [e.target.parentElement.rowIndex, e.target.cellIndex]
+        // kontrola jestli pole neni obsazeno
+        if (tableCell[i].style.backgroundColor == 'white') {
+            socket.emit('clicks')
+            blockColor = [i, color[clicks % 2]]
+            socket.emit('blockColor', blockColor)
+        }
+        // zjisteni pozice na tabulce, jen pro kontrolu
+        position = [e.target.parentElement.rowIndex, e.target.cellIndex]
+        // odeslani pozice na server
         socket.emit('position', position)
     })
     tableCell[i].style.backgroundColor = 'white'
 }
 
+socket.on('clicksPlus', function plusClick () {
+    clicks++
+})
 
-/*
-Array.prototype.forEach.call(tableCell, (cell) => {
-    box.push(cell)
-
-    cell.addEventListener('click', (e)=>{
-        e.preventDefault()
-        cell.style.backgroundColor = 'red'
-        let position = [e.target.parentElement.rowIndex, e.target.cellIndex ]
-        box.push(position)
-        socket.emit('position',position)
-    })
-    cell.style.backgroundColor = 'white'
-})*/
-
+socket.on('changeColor', changedBlock => {
+    tableCell[changedBlock[0]].style.backgroundColor = changedBlock[1]
+})
