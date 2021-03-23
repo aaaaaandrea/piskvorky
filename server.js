@@ -11,18 +11,40 @@ const io = socketio(server)
 //set static folder
 app.use(express.static(path.join(__dirname, 'publick')))
 
+const connections = [null, null]
+
 //run when client connects
 io.on('connection', socket => {
     // console.log('New ws conection')
 
+    //najdi dostupne cislo hrace
+    let playerIndex = -1
+    for (const i in connections) {
+        if (connections[i] == null) {
+            playerIndex = i
+            break
+        }
+    }
+
+    socket.emit('playerNumber', playerIndex)
+
+    //ignoruj 3 hrace
+
+    if (playerIndex == -1) return
+
+    connections[playerIndex] = false
+
+
+    //privitaci zprava
     socket.emit('message', 'welcome')
 
     //broadcast uzivatel pripojeni
-    socket.broadcast.emit('message', 'New player joined')
+    socket.broadcast.emit('message', `Player ${playerIndex} joined`)
 
     //broadcast pri odpojeni
     socket.on('disconnect', () => {
-        io.emit('message', 'Player has left the game')
+        connections[playerIndex] = null
+        io.emit('message', `Player ${playerIndex} left the game`)
     })
 
     //pocita kolikrat bzlo kliknuto na pole
@@ -35,10 +57,10 @@ io.on('connection', socket => {
         io.emit('changeColor', blockColor)
     })
 
-    //nasloucha zpravu o pozici
-    socket.on('position', (position) => {
-        io.emit('message', position)
-    })
+    /* //nasloucha zpravu o pozici
+     socket.on('position', (position) => {
+         io.emit('message', position)
+     })*/
 
 
 
