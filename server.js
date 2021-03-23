@@ -32,7 +32,15 @@ io.on('connection', socket => {
 
     if (playerIndex == -1) return
 
+    //kontroluje kteri hraci jsou online 
+
     connections[playerIndex] = false
+    for (const i in connections) {
+        if (connections[i] == false) {
+            io.emit('colorChange',{ num: i, color: 'green' })
+        }
+    }
+
 
 
     //privitaci zprava
@@ -44,6 +52,7 @@ io.on('connection', socket => {
     //broadcast pri odpojeni
     socket.on('disconnect', () => {
         connections[playerIndex] = null
+        io.emit('colorChange',{ num: playerIndex, color: 'red' })
         io.emit('message', `Player ${playerIndex} left the game`)
     })
 
